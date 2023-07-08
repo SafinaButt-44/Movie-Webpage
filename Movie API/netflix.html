@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <style>
+    * {
+      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    .bg {
+      z-index: 2;
+      position: absolute;
+      top: 150px;
+      left: 100px;
+    }
+
+    .div {
+      z-index: 2;
+      position: absolute;
+      top: 400px;
+      left: 80px;
+    }
+
+    #carouselExampleFade {
+      z-index: 2;
+      position: absolute;
+
+    }
+
+    #img123 {
+      height: 350px;
+      width: 300px;
+
+    }
+  </style>
+
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-transparent fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="images/Netflix_Logo_PMS.png" alt="" style="width: 130px; height: 100px;">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#"></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"></a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"></a>
+          </li>
+        </ul>
+        <form class="d-flex">
+
+          <button class="btn btn-danger" type="submit">Sign In</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+
+
+  <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div style="color: black; opacity: 0.5; height: 100%; width: 100%;">
+        <img src="images/netflix.jpg" class="d-block w-100" alt="..."></div>
+      </div>
+    </div>
+  </div>
+  <div class="bg">
+    <h1 class="display-1 text-center text-white fw-bolder ">Unlimited Movies,TV shows and more.</h1>
+    <h3 class="text-white fw-bold ">Watch Anywhere.Cancel Anytime.</h3>
+  </div>
+
+
+
+
+  <div class="container-fluid div w-75 mt-5 border border-4 border-danger bg-dark rounded">
+    <h4 class="text-white fw-light mt-3 ">Ready to watch.Enter Your Desired movie you want to watch.</h4>
+    <div class="container d-flex gap-3 mt-3 mb-3 p-4 ">
+      <input type="text" id="id_input" placeholder="Enter Movie" class="form-control w-50">
+      <!-- <button type="submit" class="btn btn-danger w-25" onclick="getmovie()">Get</button> -->
+      <button class="btn btn-danger" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop"
+        aria-controls="offcanvasTop" onclick="getmovie()">Get Started</button>
+
+    </div>
+  </div>
+
+  <div class="offcanvas offcanvas-top" style="height: 625px;" tabindex="-1" id="offcanvasTop"
+    aria-labelledby="offcanvasTopLabel">
+    <div class="offcanvas-header">
+      <h5 id="offcanvasTopLabel">MOVIE DETAILS</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <table class="table" id="moviedetails">
+
+      </table>
+    </div>
+  </div>
+  <script>
+    function getmovie() {
+      var searchTerm = document.getElementById("id_input").value;
+      fetch(`http://www.omdbapi.com/?t=${searchTerm}&apikey=23ceb873`)
+        .then(response => response.json())
+        .then(data => {
+          var { Title, Year, Rated, Released, Runtime, Genre, Director, Actors, Plot, Language, Poster } = data;
+          document.getElementById("moviedetails").innerHTML = `   
+  <thead>
+ <tr>
+      <td>Poster:</td>
+      <td><img src="${Poster}" id="img123" alt=""></td>
+
+    </tr>
+ <tbody>
+   <tr>
+    <td>Title:</td>
+ <td>${Title}</td>
+    <td>Released:</td>
+ <td>${Released}</td>
+    </tr>
+  </thead>
+    <tr class="table-active">
+    <td>Runtime:</td>
+ <td>${Runtime}</td>
+    <td>Genre:</td>
+    <td>${Genre}</td>
+</tr>
+<tr>
+  <td>Actors:</td>
+    <td>${Actors}</td>
+  </tr>
+   <tr> 
+    <td>Year:</td>
+ <td>${Year}</td>
+ <td>Language:</td> 
+    <td>${Language}</td>
+    </tr>
+ <tr>
+   <td>Plot:</td>
+    <td>${Plot}</td>
+    </tr>
+  </tbody>             `
+        })
+
+    }
+
+  </script>
+
+
+
+
+</body>
+
+</html>
